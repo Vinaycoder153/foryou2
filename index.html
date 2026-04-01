@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, Sathwik 🎂</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:   #4f8ef7;
+      --purple: #9b59f0;
+      --pink:   #f06292;
+      --light:  #f0f4ff;
+      --white:  #ffffff;
+      --text-dark: #1a1a2e;
+      --text-mid:  #3d3d6b;
+      --text-soft: #6a6a9a;
+      --glow-blue:   0 0 20px rgba(79,142,247,.45);
+      --glow-purple: 0 0 20px rgba(155,89,240,.45);
+      --glow-pink:   0 0 20px rgba(240,98,146,.45);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      background: #0f0c29;
+      color: var(--white);
+    }
+
+    /* =============================================
+       GLOBAL PARTICLES CANVAS (background)
+    ============================================= */
+    #particles-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* =============================================
+       SCREEN SYSTEM
+    ============================================= */
+    .screen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+      z-index: 10;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .6s ease, transform .6s ease;
+      transform: translateY(30px);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .screen.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+    .screen.exit {
+      opacity: 0;
+      transform: translateY(-30px);
+      pointer-events: none;
+    }
+
+    /* =============================================
+       GRADIENT BACKGROUNDS PER SCREEN
+    ============================================= */
+    #s1 { background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%); }
+    #s2 { background: linear-gradient(135deg, #1a0533 0%, #3b1f6e 50%, #5c2d91 100%); }
+    #s3 { background: linear-gradient(135deg, #0d1b4b 0%, #1a3a8f 50%, #0d1b4b 100%); }
+    #s4 { background: linear-gradient(135deg, #1a0a2e 0%, #2e0844 60%, #3d1157 100%); }
+    #s5 { background: linear-gradient(160deg, #0a1628 0%, #112240 60%, #0a1628 100%); }
+    #s6 { background: linear-gradient(135deg, #0c0c1e 0%, #1a1a3e 50%, #0c0c1e 100%); }
+    #s7 { background: linear-gradient(135deg, #0d0d2b 0%, #1c0533 40%, #2e0f3e 100%); }
+    #s8 { background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%); }
+
+    /* =============================================
+       MUSIC BUTTON
+    ============================================= */
+    #music-btn {
+      position: fixed;
+      top: 16px; right: 16px;
+      z-index: 9999;
+      background: rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 50%;
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      transition: transform .25s, background .25s;
+      box-shadow: var(--glow-blue);
+    }
+    #music-btn:hover { transform: scale(1.15); background: rgba(255,255,255,.22); }
+
+    /* =============================================
+       PROGRESS DOTS
+    ============================================= */
+    #progress-dots {
+      position: fixed;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.3);
+      transition: background .3s, transform .3s;
+      cursor: pointer;
+    }
+    .dot.active {
+      background: var(--white);
+      transform: scale(1.4);
+    }
+
+    /* =============================================
+       TYPOGRAPHY HELPERS
+    ============================================= */
+    .display-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 7vw, 4rem);
+      line-height: 1.2;
+      text-align: center;
+      background: linear-gradient(90deg, #a8d8ff, #d7a8ff, #ffa8d8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle {
+      font-size: clamp(.9rem, 2.8vw, 1.15rem);
+      color: rgba(255,255,255,.72);
+      text-align: center;
+      line-height: 1.7;
+      max-width: 520px;
+    }
+    .section-label {
+      font-size: .75rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.45);
+      margin-bottom: 6px;
+    }
+    .highlight {
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+
+    /* =============================================
+       BUTTONS
+    ============================================= */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 36px;
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: transform .25s, box-shadow .25s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      color: #fff;
+      box-shadow: var(--glow-blue);
+    }
+    .btn-primary:hover { transform: scale(1.06); box-shadow: 0 0 32px rgba(79,142,247,.6); }
+    .btn-ghost {
+      background: rgba(255,255,255,.1);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.25);
+      color: #fff;
+    }
+    .btn-ghost:hover { transform: scale(1.05); background: rgba(255,255,255,.18); }
+
+    /* =============================================
+       CARD (glassmorphism)
+    ============================================= */
+    .card {
+      background: rgba(255,255,255,.07);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.35);
+    }
+
+    /* =============================================
+       SCREEN 1 — INTRO
+    ============================================= */
+    #s1 .tag {
+      font-size: .78rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.5);
+      margin-bottom: 14px;
+    }
+    #s1 .big-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 9vw, 5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      text-align: center;
+      background: linear-gradient(135deg, #a8d8ff 0%, #d7a8ff 50%, #ffa8d8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+    #s1 .happy-line {
+      font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+      color: rgba(255,255,255,.75);
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    #s1 .from-tag {
+      font-size: .85rem;
+      color: rgba(255,255,255,.4);
+      margin-top: 24px;
+      text-align: center;
+    }
+    .cursor-blink {
+      display: inline-block;
+      width: 3px;
+      height: 1.1em;
+      background: var(--purple);
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* =============================================
+       SCREEN 2 — YOU MATTER
+    ============================================= */
+    #s2 .big-msg {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 9vw, 5rem);
+      font-style: italic;
+      text-align: center;
+      background: linear-gradient(135deg, #d7a8ff, #ffa8d8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.15;
+      margin-bottom: 28px;
+    }
+    #s2 .matter-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      max-width: 640px;
+      width: 100%;
+      margin-bottom: 32px;
+    }
+    #s2 .matter-card {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 18px;
+      padding: 22px 18px;
+      text-align: center;
+    }
+    #s2 .matter-card .icon { font-size: 2rem; margin-bottom: 8px; }
+    #s2 .matter-card p { font-size: .9rem; color: rgba(255,255,255,.75); line-height: 1.6; }
+
+    /* =============================================
+       SCREEN 3 — GRATITUDE
+    ============================================= */
+    #s3 .gratitude-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      max-width: 680px;
+      width: 100%;
+      margin: 24px 0 32px;
+    }
+    .g-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding: 20px 16px;
+      text-align: center;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .g-card:hover { transform: translateY(-6px); box-shadow: var(--glow-purple); }
+    .g-card .g-icon { font-size: 1.9rem; margin-bottom: 8px; }
+    .g-card h4 { font-size: .95rem; font-weight: 600; color: #d7a8ff; margin-bottom: 6px; }
+    .g-card p { font-size: .82rem; color: rgba(255,255,255,.65); line-height: 1.55; }
+
+    /* =============================================
+       SCREEN 4 — INTERACTIVE QUESTION
+    ============================================= */
+    #s4 .question-box {
+      max-width: 540px;
+      width: 100%;
+      text-align: center;
+    }
+    #s4 .q-text {
+      font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+      color: rgba(255,255,255,.88);
+      margin: 20px 0 28px;
+      line-height: 1.55;
+    }
+    .q-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .q-opt {
+      background: rgba(255,255,255,.08);
+      border: 1.5px solid rgba(255,255,255,.18);
+      border-radius: 14px;
+      padding: 16px 20px;
+      font-size: .95rem;
+      color: rgba(255,255,255,.82);
+      cursor: pointer;
+      transition: background .25s, border-color .25s, transform .25s;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .q-opt:hover { background: rgba(155,89,240,.22); border-color: var(--purple); transform: translateX(6px); }
+    .q-opt.selected {
+      background: linear-gradient(135deg, rgba(79,142,247,.28), rgba(155,89,240,.28));
+      border-color: var(--blue);
+      color: #fff;
+    }
+    .q-opt .opt-emoji { font-size: 1.3rem; }
+    #q-response {
+      font-size: .95rem;
+      color: #a8d8ff;
+      min-height: 28px;
+      font-style: italic;
+      margin-bottom: 20px;
+      transition: opacity .4s;
+    }
+
+    /* =============================================
+       SCREEN 5 — CHAT
+    ============================================= */
+    #s5 .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,.07);
+      border-radius: 16px 16px 0 0;
+      padding: 14px 18px;
+      width: 100%;
+      max-width: 440px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-bottom: none;
+    }
+    .avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .chat-name { font-size: .95rem; font-weight: 600; }
+    .chat-status { font-size: .72rem; color: #4ade80; }
+    #s5 .chat-body {
+      background: rgba(10, 20, 50, .7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 0 0 16px 16px;
+      padding: 18px 14px;
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 52vh;
+      overflow-y: auto;
+    }
+    .msg-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .msg-row.right { flex-direction: row-reverse; }
+    .bubble {
+      max-width: 72%;
+      padding: 11px 15px;
+      border-radius: 18px;
+      font-size: .88rem;
+      line-height: 1.55;
+      position: relative;
+    }
+    .bubble-left {
+      background: rgba(255,255,255,.1);
+      border-bottom-left-radius: 4px;
+      color: rgba(255,255,255,.88);
+    }
+    .bubble-right {
+      background: linear-gradient(135deg, #1f6feb, #8b5cf6);
+      border-bottom-right-radius: 4px;
+      color: #fff;
+    }
+    .msg-time {
+      font-size: .65rem;
+      color: rgba(255,255,255,.35);
+      white-space: nowrap;
+      margin-bottom: 4px;
+    }
+
+    /* =============================================
+       SCREEN 6 — SLIDESHOW
+    ============================================= */
+    #s6 .slideshow-wrap {
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+    }
+    .slide-frame {
+      width: 100%;
+      aspect-ratio: 4/3;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 12px 50px rgba(0,0,0,.5);
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity .9s ease;
+      font-size: 5rem;
+      text-align: center;
+      padding: 24px;
+      gap: 12px;
+    }
+    .slide.active { opacity: 1; }
+    .slide .slide-caption {
+      font-size: clamp(.85rem, 2.5vw, 1rem);
+      color: rgba(255,255,255,.85);
+      line-height: 1.5;
+      max-width: 340px;
+    }
+    .slide-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .sdot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.3);
+      transition: all .3s;
+      cursor: pointer;
+    }
+    .sdot.active { background: var(--white); width: 24px; border-radius: 6px; }
+
+    /* Slide gradient backgrounds */
+    .sl1 { background: linear-gradient(135deg, #1a0533, #3b1f6e); }
+    .sl2 { background: linear-gradient(135deg, #0d1b4b, #1a3a8f); }
+    .sl3 { background: linear-gradient(135deg, #1a0a2e, #2e0844); }
+    .sl4 { background: linear-gradient(135deg, #0c2340, #1a4a80); }
+    .sl5 { background: linear-gradient(135deg, #0c1a0c, #1a4a1f); }
+
+    /* =============================================
+       SCREEN 7 — FINAL MESSAGE
+    ============================================= */
+    #s7 .final-wrap {
+      max-width: 580px;
+      text-align: center;
+    }
+    #s7 .final-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      color: rgba(255,255,255,.9);
+      line-height: 1.55;
+      margin: 24px 0;
+    }
+    #s7 .wish-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0 32px;
+    }
+    .wish-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      padding: 13px 16px;
+      font-size: .9rem;
+      color: rgba(255,255,255,.8);
+      text-align: left;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .wish-item.visible { opacity: 1; transform: translateX(0); }
+    .wish-item .wi { font-size: 1.3rem; }
+
+    /* =============================================
+       SCREEN 8 — CELEBRATION
+    ============================================= */
+    #s8 .celebrate-content {
+      text-align: center;
+      max-width: 480px;
+    }
+    #s8 .big-cake { font-size: clamp(4rem, 15vw, 7rem); margin-bottom: 16px; animation: bounce 1.4s ease-in-out infinite; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-18px) rotate(3deg); }
+    }
+    #s8 .celebrate-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 6vw, 3rem);
+      background: linear-gradient(90deg, #a8d8ff, #d7a8ff, #ffa8d8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    #s8 .celebrate-sub {
+      font-size: clamp(.9rem, 2.6vw, 1.1rem);
+      color: rgba(255,255,255,.7);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    #s8 .signature {
+      font-size: .9rem;
+      color: rgba(255,255,255,.45);
+      margin-top: 28px;
+    }
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    /* =============================================
+       NAV ARROW
+    ============================================= */
+    .nav-next {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      font-size: .75rem;
+      color: rgba(255,255,255,.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      animation: float 2.5s ease-in-out infinite;
+      cursor: default;
+    }
+    @keyframes float { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-6px); } }
+    .nav-next .arrow { font-size: 1.1rem; }
+
+    /* =============================================
+       GLOW ORB DECORATIONS
+    ============================================= */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: .25;
+      pointer-events: none;
+    }
+    .orb-blue  { background: #4f8ef7; }
+    .orb-purple{ background: #9b59f0; }
+    .orb-pink  { background: #f06292; }
+
+    /* =============================================
+       FLOATING STARS / SPARKLES
+    ============================================= */
+    .sparkle {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+      animation: twinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: .15; transform: scale(.7); }
+      50% { opacity: .8; transform: scale(1.1); }
+    }
+
+    /* =============================================
+       SCROLLBAR INSIDE CHAT
+    ============================================= */
+    .chat-body::-webkit-scrollbar { width: 4px; }
+    .chat-body::-webkit-scrollbar-track { background: transparent; }
+    .chat-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 4px; }
+
+    /* =============================================
+       RESPONSIVE TWEAKS
+    ============================================= */
+    @media (max-width: 480px) {
+      .matter-cards { grid-template-columns: 1fr 1fr; }
+      .gratitude-grid { grid-template-columns: 1fr 1fr; }
+      #s5 .chat-body { max-height: 45vh; }
+    }
+    @media (max-width: 340px) {
+      .matter-cards { grid-template-columns: 1fr; }
+    }
+
+    /* =============================================
+       VOICE NOTE ELEMENT
+    ============================================= */
+    .voice-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(79,142,247,.25), rgba(155,89,240,.25));
+      border: 1px solid rgba(155,89,240,.4);
+      border-radius: 50px;
+      padding: 9px 18px;
+      font-size: .85rem;
+      color: rgba(255,255,255,.85);
+      cursor: pointer;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .voice-note:hover { box-shadow: var(--glow-purple); transform: scale(1.04); }
+    .voice-wave {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      height: 18px;
+    }
+    .voice-wave span {
+      display: block;
+      width: 3px;
+      border-radius: 3px;
+      background: var(--purple);
+      animation: wave var(--d, .8s) ease-in-out infinite alternate var(--dl, 0s);
+    }
+    @keyframes wave { from { height: 4px; } to { height: 16px; } }
+  </style>
+</head>
+<body>
+
+<!-- Particle canvas (stars) -->
+<canvas id="particles-canvas"></canvas>
+<!-- Confetti canvas -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- Music toggle -->
+<button id="music-btn" title="Toggle music" aria-label="Toggle music">🎵</button>
+
+<!-- Hidden audio (embed a royalty-free soft piano melody via data-URI seed tone oscillator) -->
+<audio id="bg-music" loop preload="none"></audio>
+
+<!-- Progress dots -->
+<div id="progress-dots">
+  <div class="dot active" data-screen="0"></div>
+  <div class="dot" data-screen="1"></div>
+  <div class="dot" data-screen="2"></div>
+  <div class="dot" data-screen="3"></div>
+  <div class="dot" data-screen="4"></div>
+  <div class="dot" data-screen="5"></div>
+  <div class="dot" data-screen="6"></div>
+  <div class="dot" data-screen="7"></div>
+</div>
+
+<!-- ===============================================================
+     SCREEN 1 — INTRO
+=============================================================== -->
+<section class="screen active" id="s1">
+  <div class="orb orb-purple" style="width:340px;height:340px;top:-80px;left:-80px;"></div>
+  <div class="orb orb-blue" style="width:260px;height:260px;bottom:-60px;right:-60px;"></div>
+
+  <p class="tag">April 1, 2025</p>
+  <div class="big-name">Sathwik Gowda P H</div>
+  <p class="happy-line">✨ Happy Birthday, brother ✨</p>
+
+  <div class="card" style="max-width:500px;width:100%;text-align:center;margin-bottom:28px;">
+    <p class="subtitle" id="typing-text"></p>
+    <span class="cursor-blink" id="cursor"></span>
+  </div>
+
+  <button class="btn btn-primary" onclick="goToScreen(1)">Begin Your Journey &nbsp;→</button>
+  <p class="from-tag">— with love from Vinay M Y 💙</p>
+</section>
+
+<!-- ===============================================================
+     SCREEN 2 — YOU MATTER
+=============================================================== -->
+<section class="screen" id="s2">
+  <div class="orb orb-pink" style="width:300px;height:300px;top:-60px;right:-60px;"></div>
+  <div class="orb orb-purple" style="width:240px;height:240px;bottom:-50px;left:-50px;"></div>
+
+  <p class="section-label">Before anything else…</p>
+  <div class="big-msg">"You Matter."</div>
+  <p class="subtitle" style="margin-bottom:28px;">
+    Not because it's your birthday — but because every single day,<br>
+    you make the world a little better just by being in it.
+  </p>
+
+  <div class="matter-cards">
+    <div class="matter-card">
+      <div class="icon">🧠</div>
+      <p>Your <strong>perspective</strong> has shaped how I see the world.</p>
+    </div>
+    <div class="matter-card">
+      <div class="icon">🛡️</div>
+      <p>Your <strong>strength</strong> gave me courage on the hardest days.</p>
+    </div>
+    <div class="matter-card">
+      <div class="icon">😂</div>
+      <p>Your <strong>laugh</strong> is the best sound in any room.</p>
+    </div>
+    <div class="matter-card">
+      <div class="icon">❤️</div>
+      <p>Your <strong>presence</strong> alone is everything.</p>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" onclick="goToScreen(2)">I'm ready →</button>
+</section>
+
+<!-- ===============================================================
+     SCREEN 3 — GRATITUDE
+=============================================================== -->
+<section class="screen" id="s3">
+  <div class="orb orb-blue" style="width:300px;height:300px;top:-70px;left:-60px;"></div>
+  <div class="orb orb-purple" style="width:220px;height:220px;bottom:-50px;right:-40px;"></div>
+
+  <p class="section-label">Why I'm grateful for you</p>
+  <h2 class="display-title" style="margin-bottom:4px;">Thank you, Sathwik.</h2>
+  <p class="subtitle" style="margin-bottom:0;">For being real, reliable, and rare.</p>
+
+  <div class="gratitude-grid">
+    <div class="g-card">
+      <div class="g-icon">🤝</div>
+      <h4>Comfort</h4>
+      <p>Talking to you feels like home. No judgment, just warmth.</p>
+    </div>
+    <div class="g-card">
+      <div class="g-icon">💡</div>
+      <h4>Mindset</h4>
+      <p>Your clarity and vision always snap me back to focus.</p>
+    </div>
+    <div class="g-card">
+      <div class="g-icon">⚡</div>
+      <h4>Energy</h4>
+      <p>Your vibe lifts the whole room — every single time.</p>
+    </div>
+    <div class="g-card">
+      <div class="g-icon">🦁</div>
+      <h4>Courage</h4>
+      <p>You face hard things head-on and quietly inspire everyone around you.</p>
+    </div>
+    <div class="g-card">
+      <div class="g-icon">🗣️</div>
+      <h4>Honesty</h4>
+      <p>You tell me the truth even when I don't want to hear it. That's rare.</p>
+    </div>
+    <div class="g-card">
+      <div class="g-icon">🎯</div>
+      <h4>Drive</h4>
+      <p>Watching you chase your goals reminds me to chase mine too.</p>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" style="margin-top:10px;" onclick="goToScreen(3)">Keep going →</button>
+</section>
+
+<!-- ===============================================================
+     SCREEN 4 — INTERACTIVE QUESTION
+=============================================================== -->
+<section class="screen" id="s4">
+  <div class="orb orb-purple" style="width:280px;height:280px;top:-60px;right:-60px;"></div>
+  <div class="orb orb-pink" style="width:200px;height:200px;bottom:-50px;left:-40px;"></div>
+
+  <div class="question-box">
+    <p class="section-label">Just between us…</p>
+    <h2 class="display-title" style="font-size:clamp(1.6rem,5.5vw,2.6rem);">What does our friendship feel like?</h2>
+    <p class="q-text">Pick the one that hits hardest 👇</p>
+
+    <div class="q-options" id="q-options">
+      <div class="q-opt" onclick="pickOption(this,'Home — no matter where we are, it feels comfortable and real. 🏡')">
+        <span class="opt-emoji">🏡</span> A place called home
+      </div>
+      <div class="q-opt" onclick="pickOption(this,'Fuel — you push me to be better every day. ⚡')">
+        <span class="opt-emoji">⚡</span> High-octane fuel
+      </div>
+      <div class="q-opt" onclick="pickOption(this,'A safe zone — where I can be 100% myself, no filters. 🛡️')">
+        <span class="opt-emoji">🛡️</span> A safe zone
+      </div>
+      <div class="q-opt" onclick="pickOption(this,'Pure joy — because every moment with you is genuinely fun. 😂')">
+        <span class="opt-emoji">😂</span> Pure, unfiltered joy
+      </div>
+    </div>
+
+    <p id="q-response"></p>
+    <button class="btn btn-primary" id="q-next-btn" style="opacity:.4;pointer-events:none;" onclick="goToScreen(4)">
+      That's it 💬 →
+    </button>
+  </div>
+</section>
+
+<!-- ===============================================================
+     SCREEN 5 — CHAT MEMORY
+=============================================================== -->
+<section class="screen" id="s5">
+  <div class="orb orb-blue" style="width:260px;height:260px;top:-50px;left:-50px;"></div>
+
+  <p class="section-label" style="margin-bottom:10px;">A few moments I'll never forget</p>
+  <h2 class="display-title" style="font-size:clamp(1.4rem,4.5vw,2rem);margin-bottom:18px;">Our Story in Messages</h2>
+
+  <div class="chat-header">
+    <div class="avatar">SG</div>
+    <div>
+      <div class="chat-name">Sathwik 🌟</div>
+      <div class="chat-status">● Online</div>
+    </div>
+  </div>
+
+  <div class="chat-body" id="chat-body">
+    <!-- Messages injected by JS for staggered reveal -->
+  </div>
+
+  <button class="btn btn-primary" style="margin-top:18px;" onclick="goToScreen(5)">See more →</button>
+</section>
+
+<!-- ===============================================================
+     SCREEN 6 — SLIDESHOW
+=============================================================== -->
+<section class="screen" id="s6">
+  <div class="orb orb-pink" style="width:260px;height:260px;top:-60px;right:-50px;"></div>
+  <div class="orb orb-blue" style="width:200px;height:200px;bottom:-40px;left:-40px;"></div>
+
+  <p class="section-label">Snapshots of us</p>
+  <h2 class="display-title" style="font-size:clamp(1.4rem,4.5vw,2rem);margin-bottom:18px;">Moments &amp; Memories</h2>
+
+  <div class="slideshow-wrap">
+    <div class="slide-frame">
+      <div class="slide sl1 active">
+        <div>🌅</div>
+        <div class="slide-caption">"That one long conversation we had at midnight — changed my perspective on everything."</div>
+      </div>
+      <div class="slide sl2">
+        <div>🏆</div>
+        <div class="slide-caption">"When you topped that tough exam after grinding non-stop — I was more proud than you were."</div>
+      </div>
+      <div class="slide sl3">
+        <div>🍕</div>
+        <div class="slide-caption">"Random food runs that turned into 3-hour deep talks. Best decisions ever."</div>
+      </div>
+      <div class="slide sl4">
+        <div>🎮</div>
+        <div class="slide-caption">"Gaming sessions where we'd lose track of time completely — no stress, just us."</div>
+      </div>
+      <div class="slide sl5">
+        <div>🌧️</div>
+        <div class="slide-caption">"That rough patch — you showed up without being asked. That's what brotherhood means."</div>
+      </div>
+    </div>
+    <div class="slide-dots" id="slide-dots"></div>
+  </div>
+
+  <button class="btn btn-primary" style="margin-top:20px;" onclick="goToScreen(6)">Almost there →</button>
+</section>
+
+<!-- ===============================================================
+     SCREEN 7 — FINAL MESSAGE
+=============================================================== -->
+<section class="screen" id="s7">
+  <div class="orb orb-purple" style="width:320px;height:320px;top:-80px;left:-80px;"></div>
+  <div class="orb orb-pink" style="width:240px;height:240px;bottom:-60px;right:-60px;"></div>
+
+  <div class="final-wrap">
+    <p class="section-label">From Vinay, with all sincerity</p>
+    <h2 class="display-title">To my brother Sathwik,</h2>
+
+    <p class="final-quote">
+      "Not everyone gets a friend who makes the journey better.<br>
+      I did — and that friend is you."
+    </p>
+
+    <div class="wish-list" id="wish-list">
+      <div class="wish-item"><span class="wi">🌟</span> May this year bring you everything you've been working towards.</div>
+      <div class="wish-item"><span class="wi">💪</span> May you stay strong even when things get heavy.</div>
+      <div class="wish-item"><span class="wi">😄</span> May you laugh harder, dream bigger, and live fully.</div>
+      <div class="wish-item"><span class="wi">🤝</span> And know — I've got your back. Always. No conditions.</div>
+    </div>
+
+    <div style="text-align:center;">
+      <div class="voice-note" id="voice-toggle" onclick="toggleVoiceNote()" title="Play voice note">
+        <span>🎙️</span>
+        <span id="voice-label">Play voice note</span>
+        <div class="voice-wave" id="voice-wave">
+          <span style="--d:.6s;--dl:0s;height:6px"></span>
+          <span style="--d:.7s;--dl:.1s;height:14px"></span>
+          <span style="--d:.5s;--dl:.15s;height:10px"></span>
+          <span style="--d:.8s;--dl:.05s;height:16px"></span>
+          <span style="--d:.6s;--dl:.2s;height:8px"></span>
+          <span style="--d:.7s;--dl:.1s;height:12px"></span>
+        </div>
+      </div>
+      <div id="voice-msg" style="margin-top:10px;font-size:.82rem;color:rgba(255,255,255,.5);display:none;">
+        🎵 Voice note is playing... (add an audio file named <code>voice.mp3</code> to activate)
+      </div>
+    </div>
+
+    <button class="btn btn-primary" style="margin-top:28px;" onclick="goToScreen(7)">🎉 Celebrate! →</button>
+  </div>
+</section>
+
+<!-- ===============================================================
+     SCREEN 8 — CELEBRATION
+=============================================================== -->
+<section class="screen" id="s8">
+  <div class="celebrate-content">
+    <div class="big-cake">🎂</div>
+    <h1 class="celebrate-title">Happy Birthday, Sathwik! 🎉</h1>
+    <p class="celebrate-sub">
+      Here's to you — one of the most genuine,<br>
+      driven, and big-hearted people I know.<br><br>
+      <strong style="color:#d7a8ff;">Today is yours. Go celebrate!</strong>
+    </p>
+
+    <button class="btn btn-primary" onclick="launchConfetti()" style="margin-bottom:14px;">
+      🎊 More confetti!
+    </button>
+    <br>
+    <button class="btn btn-ghost" onclick="goToScreen(0)">↩ Start Over</button>
+
+    <p class="signature">— Vinay M Y &nbsp;|&nbsp; Your ride-or-die 💙</p>
+  </div>
+</section>
+
+<!-- Swipe hint -->
+<div class="nav-next" id="swipe-hint">
+  <span class="arrow">↑ swipe up ↑</span>
+</div>
+
+<!-- =============================================
+     JAVASCRIPT
+============================================= -->
+<script>
+/* -----------------------------------------------
+   STATE
+----------------------------------------------- */
+let currentScreen = 0;
+const TOTAL_SCREENS = 8;
+const screens = Array.from(document.querySelectorAll('.screen'));
+const dots    = Array.from(document.querySelectorAll('.dot'));
+
+/* -----------------------------------------------
+   SCREEN NAVIGATION
+----------------------------------------------- */
+function goToScreen(idx) {
+  if (idx < 0 || idx >= TOTAL_SCREENS) return;
+  const prev = screens[currentScreen];
+  prev.classList.add('exit');
+  prev.classList.remove('active');
+  setTimeout(() => prev.classList.remove('exit'), 650);
+
+  currentScreen = idx;
+  const next = screens[currentScreen];
+  next.classList.add('active');
+
+  dots.forEach((d, i) => d.classList.toggle('active', i === currentScreen));
+
+  // Screen-specific actions
+  if (currentScreen === 5) initSlideshow();
+  if (currentScreen === 6) revealWishList();
+  if (currentScreen === 7) { launchConfetti(); playBgMusic(); }
+  if (currentScreen === 4) populateChat();
+
+  // hide swipe hint on last screen
+  document.getElementById('swipe-hint').style.opacity = currentScreen === 7 ? '0' : '1';
+}
+
+// Dot click navigation
+dots.forEach(d => d.addEventListener('click', () => goToScreen(+d.dataset.screen)));
+
+/* -----------------------------------------------
+   TOUCH / SWIPE
+----------------------------------------------- */
+let touchStartY = 0;
+document.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+document.addEventListener('touchend', e => {
+  const dy = touchStartY - e.changedTouches[0].clientY;
+  if (Math.abs(dy) > 55) goToScreen(currentScreen + (dy > 0 ? 1 : -1));
+}, { passive: true });
+
+/* Keyboard */
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') goToScreen(currentScreen + 1);
+  if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  goToScreen(currentScreen - 1);
+});
+
+/* -----------------------------------------------
+   TYPING ANIMATION — SCREEN 1
+----------------------------------------------- */
+const typingLines = [
+  "Hey man — today is your day.",
+  "Not a regular birthday wish.",
+  "This one is built just for you.",
+  "Sit back, and feel it. 🙌"
+];
+let tl = 0, tc = 0, typing = true;
+const typingEl = document.getElementById('typing-text');
+const cursorEl = document.getElementById('cursor');
+
+function typeLoop() {
+  if (typing) {
+    if (tc < typingLines[tl].length) {
+      typingEl.textContent += typingLines[tl][tc++];
+      setTimeout(typeLoop, 52);
+    } else {
+      typing = false;
+      setTimeout(typeLoop, 1600);
+    }
+  } else {
+    if (tc > 0) {
+      typingEl.textContent = typingLines[tl].substring(0, --tc);
+      setTimeout(typeLoop, 28);
+    } else {
+      typing = true;
+      tl = (tl + 1) % typingLines.length;
+      setTimeout(typeLoop, 400);
+    }
+  }
+}
+typeLoop();
+
+/* -----------------------------------------------
+   INTERACTIVE QUESTION — SCREEN 4
+----------------------------------------------- */
+function pickOption(el, msg) {
+  document.querySelectorAll('.q-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  const resp = document.getElementById('q-response');
+  resp.style.opacity = 0;
+  setTimeout(() => {
+    resp.textContent = '✨ ' + msg;
+    resp.style.opacity = 1;
+  }, 220);
+  const btn = document.getElementById('q-next-btn');
+  btn.style.opacity = '1';
+  btn.style.pointerEvents = 'all';
+}
+
+/* -----------------------------------------------
+   CHAT — SCREEN 5
+----------------------------------------------- */
+const chatMessages = [
+  { side: 'left',  text: "Bro, you up? Need to talk about something.", time: "10:42 PM" },
+  { side: 'right', text: "Always 🫡 what's going on?", time: "10:43 PM" },
+  { side: 'left',  text: "I'm overthinking everything again. The whole future thing.", time: "10:44 PM" },
+  { side: 'right', text: "Breathe. You've handled worse. Remember last year? You thought that too.", time: "10:45 PM" },
+  { side: 'left',  text: "Yeah but this feels different man.", time: "10:46 PM" },
+  { side: 'right', text: "It always does. That's just the brain being loud. You're good. We're good. 💙", time: "10:47 PM" },
+  { side: 'left',  text: "Lol how are you always this calm 😭", time: "10:49 PM" },
+  { side: 'right', text: "Because one of us has to be 😂  Also — you'd do the same for me.", time: "10:50 PM" },
+  { side: 'left',  text: "Seriously though. Thanks, Sathwik. You don't know how much this helps.", time: "10:52 PM" },
+  { side: 'right', text: "That's what brothers are for. Now sleep — we've got things to conquer tomorrow 🚀", time: "10:53 PM" },
+];
+
+function populateChat() {
+  const body = document.getElementById('chat-body');
+  if (body.children.length > 0) return; // already populated
+  chatMessages.forEach((m, i) => {
+    setTimeout(() => {
+      const row = document.createElement('div');
+      row.className = 'msg-row ' + (m.side === 'right' ? 'right' : '');
+      row.innerHTML = `
+        <div class="avatar" style="width:28px;height:28px;font-size:.65rem;">${m.side === 'left' ? 'SG' : 'VM'}</div>
+        <div>
+          <div class="msg-time" style="text-align:${m.side === 'right' ? 'right' : 'left'}">${m.time}</div>
+          <div class="bubble bubble-${m.side}">${m.text}</div>
+        </div>`;
+      body.appendChild(row);
+      body.scrollTop = body.scrollHeight;
+    }, i * 350);
+  });
+}
+
+/* -----------------------------------------------
+   SLIDESHOW — SCREEN 6
+----------------------------------------------- */
+let slideIndex = 0;
+let slideTimer = null;
+const SLIDE_COUNT = 5;
+
+function initSlideshow() {
+  if (document.getElementById('slide-dots').children.length > 0) return;
+  const dotsEl = document.getElementById('slide-dots');
+  for (let i = 0; i < SLIDE_COUNT; i++) {
+    const d = document.createElement('div');
+    d.className = 'sdot' + (i === 0 ? ' active' : '');
+    d.onclick = () => showSlide(i);
+    dotsEl.appendChild(d);
+  }
+  clearInterval(slideTimer);
+  slideTimer = setInterval(() => showSlide((slideIndex + 1) % SLIDE_COUNT), 3800);
+}
+
+function showSlide(idx) {
+  const slides = document.querySelectorAll('.slide');
+  const sdots  = document.querySelectorAll('.sdot');
+  slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+  sdots.forEach((d, i)  => d.classList.toggle('active', i === idx));
+  slideIndex = idx;
+}
+
+/* -----------------------------------------------
+   WISH LIST REVEAL — SCREEN 7
+----------------------------------------------- */
+function revealWishList() {
+  const items = document.querySelectorAll('.wish-item');
+  items.forEach((item, i) => {
+    setTimeout(() => item.classList.add('visible'), 300 + i * 280);
+  });
+}
+
+/* -----------------------------------------------
+   VOICE NOTE — SCREEN 7
+----------------------------------------------- */
+let voicePlaying = false;
+const voiceAudio = new Audio('voice.mp3');
+voiceAudio.onerror = () => {}; // silent fail if file missing
+
+function toggleVoiceNote() {
+  voicePlaying = !voicePlaying;
+  const label = document.getElementById('voice-label');
+  const msg   = document.getElementById('voice-msg');
+  const waves = document.querySelectorAll('#voice-wave span');
+  if (voicePlaying) {
+    voiceAudio.play().catch(() => {});
+    label.textContent = 'Pause';
+    msg.style.display = 'block';
+    waves.forEach(w => w.style.animationPlayState = 'running');
+  } else {
+    voiceAudio.pause();
+    label.textContent = 'Play voice note';
+    msg.style.display = 'none';
+    waves.forEach(w => w.style.animationPlayState = 'paused');
+  }
+}
+
+/* -----------------------------------------------
+   BACKGROUND MUSIC (Web Audio API — gentle ambient)
+----------------------------------------------- */
+let audioCtx = null;
+let musicNodes = [];
+let musicOn = false;
+
+function buildMusic() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const master = audioCtx.createGain();
+  master.gain.value = 0.06;
+  master.connect(audioCtx.destination);
+
+  // Soft pad — stack of sine oscillators detuned slightly
+  const freqs = [261.63, 329.63, 392.00, 523.25]; // C major
+  freqs.forEach((freq, i) => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    osc.detune.value = (i % 2 === 0 ? 3 : -3);
+    gain.gain.value = 0.4 + (i * 0.05);
+    osc.connect(gain);
+    gain.connect(master);
+    osc.start();
+    musicNodes.push(osc, gain);
+  });
+
+  // Gentle slow pulse on master gain
+  const lfo = audioCtx.createOscillator();
+  const lfoGain = audioCtx.createGain();
+  lfo.frequency.value = 0.08;
+  lfoGain.gain.value = 0.025;
+  lfo.connect(lfoGain);
+  lfoGain.connect(master.gain);
+  lfo.start();
+  musicNodes.push(lfo, lfoGain, master);
+}
+
+function playBgMusic() {
+  if (musicOn) return;
+  try {
+    buildMusic();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    musicOn = true;
+    document.getElementById('music-btn').textContent = '🔊';
+  } catch(e) {}
+}
+
+function stopBgMusic() {
+  if (!audioCtx) return;
+  try {
+    audioCtx.suspend();
+    musicOn = false;
+    document.getElementById('music-btn').textContent = '🎵';
+  } catch(e) {}
+}
+
+document.getElementById('music-btn').addEventListener('click', () => {
+  if (musicOn) stopBgMusic(); else playBgMusic();
+});
+
+/* -----------------------------------------------
+   CONFETTI
+----------------------------------------------- */
+const confCanvas = document.getElementById('confetti-canvas');
+const confCtx    = confCanvas.getContext('2d');
+let confParticles = [];
+let confRunning = false;
+let confFrame;
+
+function resizeConf() {
+  confCanvas.width  = window.innerWidth;
+  confCanvas.height = window.innerHeight;
+}
+resizeConf();
+window.addEventListener('resize', resizeConf);
+
+function makeParticle() {
+  const colors = ['#a8d8ff','#d7a8ff','#ffa8d8','#ffd8a8','#a8ffd8','#ffe8a8'];
+  return {
+    x: Math.random() * confCanvas.width,
+    y: -12,
+    vx: (Math.random() - .5) * 3,
+    vy: Math.random() * 3 + 2,
+    rot: Math.random() * 360,
+    drot: (Math.random() - .5) * 6,
+    w: Math.random() * 10 + 6,
+    h: Math.random() * 6 + 3,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    alpha: 1
+  };
+}
+
+function launchConfetti() {
+  confParticles = [];
+  for (let i = 0; i < 160; i++) confParticles.push(makeParticle());
+  confRunning = true;
+  animateConf();
+}
+
+function animateConf() {
+  if (!confRunning) return;
+  confCtx.clearRect(0, 0, confCanvas.width, confCanvas.height);
+  confParticles.forEach((p, i) => {
+    p.x  += p.vx;
+    p.y  += p.vy;
+    p.rot += p.drot;
+    p.vy += .06; // gravity
+    if (p.y > confCanvas.height + 20) {
+      // recycle a few times
+      if (Math.random() < .3) {
+        confParticles[i] = makeParticle();
+      } else {
+        p.alpha -= .02;
+      }
+    }
+    confCtx.save();
+    confCtx.globalAlpha = Math.max(p.alpha, 0);
+    confCtx.translate(p.x, p.y);
+    confCtx.rotate(p.rot * Math.PI / 180);
+    confCtx.fillStyle = p.color;
+    confCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    confCtx.restore();
+  });
+  confParticles = confParticles.filter(p => p.alpha > 0);
+  if (confParticles.length > 0) {
+    confFrame = requestAnimationFrame(animateConf);
+  } else {
+    confRunning = false;
+    confCtx.clearRect(0, 0, confCanvas.width, confCanvas.height);
+  }
+}
+
+/* -----------------------------------------------
+   STAR PARTICLES (background canvas)
+----------------------------------------------- */
+const starsCanvas = document.getElementById('particles-canvas');
+const starsCtx    = starsCanvas.getContext('2d');
+let stars = [];
+
+function resizeStars() {
+  starsCanvas.width  = window.innerWidth;
+  starsCanvas.height = window.innerHeight;
+  buildStars();
+}
+
+function buildStars() {
+  stars = [];
+  const count = Math.floor((starsCanvas.width * starsCanvas.height) / 4200);
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      x: Math.random() * starsCanvas.width,
+      y: Math.random() * starsCanvas.height,
+      r: Math.random() * 1.8 + .3,
+      alpha: Math.random(),
+      dalpha: (Math.random() * .008 + .003) * (Math.random() < .5 ? 1 : -1)
+    });
+  }
+}
+
+function animateStars() {
+  starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+  stars.forEach(s => {
+    s.alpha += s.dalpha;
+    if (s.alpha <= 0 || s.alpha >= 1) s.dalpha *= -1;
+    starsCtx.beginPath();
+    starsCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    starsCtx.fillStyle = `rgba(255,255,255,${s.alpha.toFixed(2)})`;
+    starsCtx.fill();
+  });
+  requestAnimationFrame(animateStars);
+}
+
+resizeStars();
+animateStars();
+window.addEventListener('resize', resizeStars);
+</script>
+</body>
+</html>

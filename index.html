@@ -945,22 +945,52 @@
       </div>
 
       <div style="text-align:center;">
-        <div class="voice-note" id="voice-toggle" onclick="toggleVoiceNote()" title="Play voice note">
-          <span>🎙️</span>
-          <span id="voice-label">Play voice note</span>
-          <div class="voice-wave" id="voice-wave">
-            <span style="--d:.6s;--dl:0s;height:6px"></span>
-            <span style="--d:.7s;--dl:.1s;height:14px"></span>
-            <span style="--d:.5s;--dl:.15s;height:10px"></span>
-            <span style="--d:.8s;--dl:.05s;height:16px"></span>
-            <span style="--d:.6s;--dl:.2s;height:8px"></span>
-            <span style="--d:.7s;--dl:.1s;height:12px"></span>
-          </div>
-        </div>
-        <div id="voice-msg" style="margin-top:10px;font-size:.82rem;color:rgba(255,255,255,.5);display:none;">
-          🎵 Voice note is playing... (add an audio file named <code>voice.mp3</code> to activate)
-        </div>
-      </div>
+
+  <!-- AUDIO -->
+  <audio id="voice-audio" src="voice.mp3"></audio>
+
+  <!-- VOICE BUTTON -->
+  <div class="voice-note" 
+       id="voice-toggle"
+       title="Play voice note"
+       onclick="
+         var a = document.getElementById('voice-audio');
+         var msg = document.getElementById('voice-msg');
+         var label = document.getElementById('voice-label');
+
+         if(a.paused){
+            a.play();
+            msg.style.display='block';
+            label.innerText='Playing...';
+         } else {
+            a.pause();
+            a.currentTime = 0;
+            msg.style.display='none';
+            label.innerText='Play voice note';
+         }
+       ">
+
+    <span>🎙️</span>
+    <span id="voice-label">Play voice note</span>
+
+    <div class="voice-wave" id="voice-wave">
+      <span style="--d:.6s;--dl:0s;height:6px"></span>
+      <span style="--d:.7s;--dl:.1s;height:14px"></span>
+      <span style="--d:.5s;--dl:.15s;height:10px"></span>
+      <span style="--d:.8s;--dl:.05s;height:16px"></span>
+      <span style="--d:.6s;--dl:.2s;height:8px"></span>
+      <span style="--d:.7s;--dl:.1s;height:12px"></span>
+    </div>
+
+  </div>
+
+  <!-- MESSAGE -->
+  <div id="voice-msg" 
+       style="margin-top:10px;font-size:.82rem;color:rgba(255,255,255,.5);display:none;">
+    🎵 Voice note is playing...
+  </div>
+
+</div>
 
       <button class="btn btn-primary" style="margin-top:28px;" onclick="goToScreen(7)">🎉 Celebrate! →</button>
     </div>

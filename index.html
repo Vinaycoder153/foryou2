@@ -573,6 +573,35 @@
       pointer-events: none;
     }
 
+    .balloon {
+    position: fixed;
+    bottom: -100px;
+    width: 40px;
+    height: 50px;
+    border-radius: 50%;
+    animation: floatUp linear forwards;
+}
+.balloon::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 30px;
+    background: white;
+    top: 50px;
+    left: 50%;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-120vh);
+        opacity: 0;
+    }
+}
+
     /* =============================================
        NAV ARROW
     ============================================= */
@@ -1275,12 +1304,70 @@ function makeParticle() {
   };
 }
 
+function createBalloons() {
+    for (let i = 0; i < 10; i++) {
+        let balloon = document.createElement("div");
+        balloon.className = "balloon";
+        balloon.style.left = Math.random() * 100 + "vw";
+        balloon.style.background = randomColor();
+        balloon.style.animationDuration = (5 + Math.random() * 5) + "s";
+        document.body.appendChild(balloon);
+
+        setTimeout(() => balloon.remove(), 10000);
+    }
+}
+
+function randomColor() {
+    const colors = ["#ff4d6d", "#ffafcc", "#bde0fe", "#cdb4db", "#a0c4ff"];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
 function launchConfetti() {
-  confetti({
-            particleCount:150,
-            spread:80
+    // 🎆 Main burst
+    confetti({
+        particleCount: 150,
+        spread: 100,
+        origin: { y: 0.6 }
+    });
+
+    // 💥 Side blasts
+    setTimeout(() => {
+        confetti({
+            particleCount: 80,
+            angle: 60,
+            spread: 70,
+            origin: { x: 0 }
         });
-  animateConf();
+        confetti({
+            particleCount: 80,
+            angle: 120,
+            spread: 70,
+            origin: { x: 1 }
+        });
+    }, 300);
+
+    // ✨ Continuous sparkle rain
+    let duration = 2 * 1000;
+    let end = Date.now() + duration;
+
+    (function frame() {
+        confetti({
+            particleCount: 5,
+            spread: 60,
+            ticks: 50,
+            origin: {
+                x: Math.random(),
+                y: Math.random() - 0.2
+            }
+        });
+
+        if (Date.now() < end) {
+            requestAnimationFrame(frame);
+        }
+    })();
+
+    // 🎈 Balloons
+    createBalloons();
 }
 
 function animateConf() {
